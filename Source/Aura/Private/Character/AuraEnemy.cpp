@@ -12,6 +12,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 
 #include "DebugHelper.h"
+#include "Components/CapsuleComponent.h"
 
 
 AAuraEnemy::AAuraEnemy()
@@ -132,4 +133,15 @@ void AAuraEnemy::InitAbilityActorInfo()
 void AAuraEnemy::InitializeDefaultAttributes() const
 {
 	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
+}
+
+void AAuraEnemy::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	const bool bIsServer = HasAuthority();
+
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Capsule Z : %.2f"),
+		bIsServer ? TEXT("Server") : TEXT("Client"),
+		GetCapsuleComponent()->GetComponentLocation().Z);
 }
